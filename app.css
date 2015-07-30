@@ -133,3 +133,7 @@
 #world > div {
   margin-bottom: 1ex;
 }
+
+#preferencePane {
+  margin-top: 2em;
+}
