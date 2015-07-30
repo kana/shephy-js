@@ -1008,6 +1008,11 @@ var shephy = {};
     }
   }
 
+  function startNewGame() {
+    processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
+    $('#preferencePane').hide();
+  }
+
 
 
 
