@@ -1020,8 +1020,6 @@ var shephy = {};
 
 
   // Bootstrap  {{{1
-  // TODO: Revise UI to start the first game after page load.
-  //       (Show "Start a game" instead of "Draw cards)
 
   $(function () {
     $('#startButton').click(startNewGame);
