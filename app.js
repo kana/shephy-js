@@ -1021,6 +1021,7 @@ var shephy = {};
   //       (Show "Start a game" instead of "Draw cards)
 
   $(function () {
+    $('#startButton').click(startNewGame);
     processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
   });
 
