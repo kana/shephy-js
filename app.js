@@ -1022,7 +1022,7 @@ var shephy = {};
 
   $(function () {
     $('#startButton').click(startNewGame);
-    processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
+    drawGameTree(S.makeGameTree(S.makeInitalWorld()));
   });
 
   //}}}1
