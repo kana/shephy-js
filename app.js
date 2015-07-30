@@ -984,11 +984,14 @@ var shephy = {};
       $('#message').text(descriptionOfMoves(gameTree.moves));
       $('#moves').empty();
     } else {
+      var finished = gameTree.moves.length == 0;
       $('#message').text(
-        gameTree.moves.length == 0
+        finished
         ? S.judgeGame(gameTree.world).description
         : descriptionOfMoves(gameTree.moves)
       );
+      if (finished)
+        $('#preferencePane').show();
       gameTree.moves
         .filter(function (m) {return m.cardRegion !== undefined;})
         .forEach(function (m) {
