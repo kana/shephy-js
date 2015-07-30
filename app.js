@@ -937,7 +937,8 @@ var shephy = {};
 
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
-    drawGameTree(gt);
+    var v = drawGameTree(gt);
+    setUpUIToChooseMove(gt, v);
     if (mayBeAutomated(gt)) {
       setTimeout(
         function () {processMove(gt.moves[0]);},
@@ -979,7 +980,10 @@ var shephy = {};
     $('#deck > .cards').html(v.deck).toggleClass('lined', !deckRevealed);
     $('#discardPile > .cards').html(visualizeCards(w.discardPile));
     $('#exile > .cards').html(visualizeCards(w.exile));
+    return v;
+  }
 
+  function setUpUIToChooseMove(gameTree, v) {
     if (mayBeAutomated(gameTree)) {
       $('#message').text(descriptionOfMoves(gameTree.moves));
       $('#moves').empty();
