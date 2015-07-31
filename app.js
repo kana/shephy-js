@@ -938,7 +938,12 @@ var shephy = {};
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
     var v = drawGameTree(gt);
-    setUpUIToChooseMove(gt, v);
+    if (gt.moves.length == 0) {
+      $('#message').text(S.judgeGame(gt.world).description);
+      $('#preferencePane').show();
+    } else {
+      setUpUIToChooseMove(gt, v);
+    }
   }
 
   function nodizeMove(m) {
@@ -986,10 +991,6 @@ var shephy = {};
         AUTOMATED_MOVE_DELAY
       );
     } else {
-      if (gameTree.moves.length == 0) {
-        $('#message').text(S.judgeGame(gameTree.world).description);
-        $('#preferencePane').show();
-      }
       gameTree.moves
         .filter(function (m) {return m.cardRegion !== undefined;})
         .forEach(function (m) {
