@@ -942,7 +942,14 @@ var shephy = {};
       $('#message').text(S.judgeGame(gt.world).description);
       $('#preferencePane').show();
     } else {
-      setUpUIToChooseMove(gt, v);
+      if (mayBeAutomated(gt)) {
+        setTimeout(
+          function () {processMove(gt.moves[0]);},
+          AUTOMATED_MOVE_DELAY
+        );
+      } else {
+        setUpUIToChooseMove(gt, v);
+      }
     }
   }
 
@@ -985,28 +992,21 @@ var shephy = {};
   }
 
   function setUpUIToChooseMove(gameTree, v) {
-    if (mayBeAutomated(gameTree)) {
-      setTimeout(
-        function () {processMove(gt.moves[0]);},
-        AUTOMATED_MOVE_DELAY
+    gameTree.moves
+      .filter(function (m) {return m.cardRegion !== undefined;})
+      .forEach(function (m) {
+        v[m.cardRegion][m.cardIndex]
+          .addClass('clickable')
+          .click(function () {
+            processMove(m);
+          });
+      });
+    $('#moves')
+      .append(
+        gameTree.moves
+        .filter(function (m) {return m.cardRegion === undefined;})
+        .map(nodizeMove)
       );
-    } else {
-      gameTree.moves
-        .filter(function (m) {return m.cardRegion !== undefined;})
-        .forEach(function (m) {
-          v[m.cardRegion][m.cardIndex]
-            .addClass('clickable')
-            .click(function () {
-              processMove(m);
-            });
-        });
-      $('#moves')
-        .append(
-          gameTree.moves
-          .filter(function (m) {return m.cardRegion === undefined;})
-          .map(nodizeMove)
-        );
-    }
   }
 
   function startNewGame() {
