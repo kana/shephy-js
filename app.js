@@ -979,11 +979,11 @@ var shephy = {};
     $('#deck > .cards').html(v.deck).toggleClass('lined', !deckRevealed);
     $('#discardPile > .cards').html(visualizeCards(w.discardPile));
     $('#exile > .cards').html(visualizeCards(w.exile));
+    $('#message').text(descriptionOfMoves(gameTree.moves));
     return v;
   }
 
   function setUpUIToChooseMove(gameTree, v) {
-    $('#message').text(descriptionOfMoves(gameTree.moves));
     $('#moves').empty();
     if (mayBeAutomated(gameTree)) {
       setTimeout(
