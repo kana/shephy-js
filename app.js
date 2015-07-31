@@ -979,8 +979,8 @@ var shephy = {};
 
   function setUpUIToChooseMove(gameTree, v) {
     $('#message').text(descriptionOfMoves(gameTree.moves));
+    $('#moves').empty();
     if (mayBeAutomated(gameTree)) {
-      $('#moves').empty();
       setTimeout(
         function () {processMove(gt.moves[0]);},
         AUTOMATED_MOVE_DELAY
@@ -1000,7 +1000,6 @@ var shephy = {};
             });
         });
       $('#moves')
-        .empty()
         .append(
           gameTree.moves
           .filter(function (m) {return m.cardRegion === undefined;})
