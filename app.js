@@ -939,12 +939,6 @@ var shephy = {};
     var gt = S.force(m.gameTreePromise);
     var v = drawGameTree(gt);
     setUpUIToChooseMove(gt, v);
-    if (mayBeAutomated(gt)) {
-      setTimeout(
-        function () {processMove(gt.moves[0]);},
-        AUTOMATED_MOVE_DELAY
-      );
-    }
   }
 
   function nodizeMove(m) {
@@ -987,6 +981,10 @@ var shephy = {};
     if (mayBeAutomated(gameTree)) {
       $('#message').text(descriptionOfMoves(gameTree.moves));
       $('#moves').empty();
+      setTimeout(
+        function () {processMove(gt.moves[0]);},
+        AUTOMATED_MOVE_DELAY
+      );
     } else {
       var finished = gameTree.moves.length == 0;
       $('#message').text(
