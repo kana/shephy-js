@@ -980,11 +980,11 @@ var shephy = {};
     $('#discardPile > .cards').html(visualizeCards(w.discardPile));
     $('#exile > .cards').html(visualizeCards(w.exile));
     $('#message').text(descriptionOfMoves(gameTree.moves));
+    $('#moves').empty();
     return v;
   }
 
   function setUpUIToChooseMove(gameTree, v) {
-    $('#moves').empty();
     if (mayBeAutomated(gameTree)) {
       setTimeout(
         function () {processMove(gt.moves[0]);},
