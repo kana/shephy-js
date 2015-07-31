@@ -978,22 +978,18 @@ var shephy = {};
   }
 
   function setUpUIToChooseMove(gameTree, v) {
+    $('#message').text(descriptionOfMoves(gameTree.moves));
     if (mayBeAutomated(gameTree)) {
-      $('#message').text(descriptionOfMoves(gameTree.moves));
       $('#moves').empty();
       setTimeout(
         function () {processMove(gt.moves[0]);},
         AUTOMATED_MOVE_DELAY
       );
     } else {
-      var finished = gameTree.moves.length == 0;
-      $('#message').text(
-        finished
-        ? S.judgeGame(gameTree.world).description
-        : descriptionOfMoves(gameTree.moves)
-      );
-      if (finished)
+      if (gameTree.moves.length == 0) {
+        $('#message').text(S.judgeGame(gameTree.world).description);
         $('#preferencePane').show();
+      }
       gameTree.moves
         .filter(function (m) {return m.cardRegion !== undefined;})
         .forEach(function (m) {
