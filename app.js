@@ -984,11 +984,14 @@ var shephy = {};
       $('#message').text(descriptionOfMoves(gameTree.moves));
       $('#moves').empty();
     } else {
+      var finished = gameTree.moves.length == 0;
       $('#message').text(
-        gameTree.moves.length == 0
+        finished
         ? S.judgeGame(gameTree.world).description
         : descriptionOfMoves(gameTree.moves)
       );
+      if (finished)
+        $('#preferencePane').show();
       gameTree.moves
         .filter(function (m) {return m.cardRegion !== undefined;})
         .forEach(function (m) {
@@ -1008,15 +1011,19 @@ var shephy = {};
     }
   }
 
+  function startNewGame() {
+    processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
+    $('#preferencePane').hide();
+  }
+
 
 
 
   // Bootstrap  {{{1
-  // TODO: Revise UI to start the first game after page load.
-  //       (Show "Start a game" instead of "Draw cards)
 
   $(function () {
-    processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
+    $('#startButton').click(startNewGame);
+    drawGameTree(S.makeGameTree(S.makeInitalWorld()));
   });
 
   //}}}1
