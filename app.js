@@ -937,12 +937,19 @@ var shephy = {};
 
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
-    drawGameTree(gt);
-    if (mayBeAutomated(gt)) {
-      setTimeout(
-        function () {processMove(gt.moves[0]);},
-        AUTOMATED_MOVE_DELAY
-      );
+    var v = drawGameTree(gt);
+    if (gt.moves.length == 0) {
+      $('#message').text(S.judgeGame(gt.world).description);
+      $('#preferencePane').show();
+    } else {
+      if (mayBeAutomated(gt)) {
+        setTimeout(
+          function () {processMove(gt.moves[0]);},
+          AUTOMATED_MOVE_DELAY
+        );
+      } else {
+        setUpUIToChooseMove(gt, v);
+      }
     }
   }
 
@@ -979,36 +986,27 @@ var shephy = {};
     $('#deck > .cards').html(v.deck).toggleClass('lined', !deckRevealed);
     $('#discardPile > .cards').html(visualizeCards(w.discardPile));
     $('#exile > .cards').html(visualizeCards(w.exile));
+    $('#message').text(descriptionOfMoves(gameTree.moves));
+    $('#moves').empty();
+    return v;
+  }
 
-    if (mayBeAutomated(gameTree)) {
-      $('#message').text(descriptionOfMoves(gameTree.moves));
-      $('#moves').empty();
-    } else {
-      var finished = gameTree.moves.length == 0;
-      $('#message').text(
-        finished
-        ? S.judgeGame(gameTree.world).description
-        : descriptionOfMoves(gameTree.moves)
+  function setUpUIToChooseMove(gameTree, v) {
+    gameTree.moves
+      .filter(function (m) {return m.cardRegion !== undefined;})
+      .forEach(function (m) {
+        v[m.cardRegion][m.cardIndex]
+          .addClass('clickable')
+          .click(function () {
+            processMove(m);
+          });
+      });
+    $('#moves')
+      .append(
+        gameTree.moves
+        .filter(function (m) {return m.cardRegion === undefined;})
+        .map(nodizeMove)
       );
-      if (finished)
-        $('#preferencePane').show();
-      gameTree.moves
-        .filter(function (m) {return m.cardRegion !== undefined;})
-        .forEach(function (m) {
-          v[m.cardRegion][m.cardIndex]
-            .addClass('clickable')
-            .click(function () {
-              processMove(m);
-            });
-        });
-      $('#moves')
-        .empty()
-        .append(
-          gameTree.moves
-          .filter(function (m) {return m.cardRegion === undefined;})
-          .map(nodizeMove)
-        );
-    }
   }
 
   function startNewGame() {
