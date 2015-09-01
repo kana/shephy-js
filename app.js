@@ -939,7 +939,7 @@ var shephy = {};
   }
 
   var AUTOMATED_MOVE_DELAY = 500;
-  var player;
+  var playerType;
 
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
@@ -954,7 +954,7 @@ var shephy = {};
           AUTOMATED_MOVE_DELAY
         );
       } else {
-        aiTable[player](gt, v);
+        aiTable[playerType](gt, v);
       }
     }
   }
@@ -1016,7 +1016,7 @@ var shephy = {};
   }
 
   function startNewGame() {
-    player = $('#playerType').val();
+    playerType = $('#playerType').val();
     processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
     $('#preferencePane').hide();
   }
