@@ -934,6 +934,7 @@ var shephy = {};
   }
 
   var AUTOMATED_MOVE_DELAY = 500;
+  var player;
 
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
@@ -1010,6 +1011,7 @@ var shephy = {};
   }
 
   function startNewGame() {
+    player = $('#playerType').val();
     processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
     $('#preferencePane').hide();
   }
