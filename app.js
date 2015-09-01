@@ -895,6 +895,12 @@ var shephy = {};
     }
   }
 
+  function scorePosition(gameTree) {
+    // TODO: Improve scoring.
+    var ranks = gameTree.world.field.map(function (c) {return c.rank;});
+    return ranks.reduce(function (ra, r) {return ra + r;}, 0);
+  }
+
   // UI  {{{1
   // TODO: Add UI to quit the current game.
 
