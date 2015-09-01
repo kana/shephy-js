@@ -849,6 +849,11 @@ var shephy = {};
   var aiTable = {
     random: function (gt) {
       return gt.moves[random(gt.moves.length)];
+    },
+    minimax: function (gt) {
+      var ratings = calculateRatings(limitGameTreeDepth(gt, 4));
+      var maxRating = Math.max.apply(null, ratings);
+      return gt.moves[ratings.indexOf(maxRating)];
     }
   };
 
