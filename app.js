@@ -954,14 +954,7 @@ var shephy = {};
           AUTOMATED_MOVE_DELAY
         );
       } else {
-        if (player == 'human') {
-          setUpUIToChooseMove(gt, v);
-        } else {
-          setTimeout(
-            function () {processMove(gt.moves[random(gt.moves.length)]);},
-            AUTOMATED_MOVE_DELAY * 2
-          );
-        }
+        aiTable[player](gt, v);
       }
     }
   }
