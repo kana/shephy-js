@@ -844,6 +844,20 @@ var shephy = {};
     }];
   };
 
+  // AI  {{{1
+
+  var aiTable = {
+    human: function (gt, v) {
+      setUpUIToChooseMove(gt, v);
+    },
+    random: function (gt, v) {
+      setTimeout(
+        function () {processMove(gt.moves[random(gt.moves.length)]);},
+        AUTOMATED_MOVE_DELAY * 2
+      );
+    }
+  };
+
   // UI  {{{1
   // TODO: Add UI to quit the current game.
 
