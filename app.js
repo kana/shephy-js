@@ -887,6 +887,14 @@ var shephy = {};
     });
   }
 
+  function ratePosition(gameTree) {
+    if (1 <= gameTree.moves.length) {
+      return Math.max.apply(null, calculateRatings(gameTree));
+    } else {
+      return scorePosition(gameTree);
+    }
+  }
+
   // UI  {{{1
   // TODO: Add UI to quit the current game.
 
