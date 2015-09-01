@@ -857,6 +857,31 @@ var shephy = {};
     }
   };
 
+  function limitGameTreeDepth(gameTree, depth) {
+    var moves;
+    if (depth === 0) {
+      moves = [];
+    } else {
+      moves = gameTree.moves.map(function (m) {
+        return {
+          description: m.description,
+          cardRegion: m.cardRegion,
+          cardIndex: m.cardIndex,
+          gameTreePromise: S.delay(function () {
+            return limitGameTreeDepth(S.force(m.gameTreePromise), depth - 1);
+          })
+        };
+      });
+      moves.automated = gameTree.moves.automated;
+      moves.description = gameTree.moves.description;
+    }
+    return {
+      world: gameTree.world,
+      moves: moves
+    };
+  }
+
+
   // UI  {{{1
   // TODO: Add UI to quit the current game.
 
