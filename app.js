@@ -845,16 +845,7 @@ var shephy = {};
   };
 
   // UI  {{{1
-  // TODO: Add UI to start a new game after finishing a game.
   // TODO: Add UI to quit the current game.
-  // TODO: Choose a move automatically if it doesn't express a user's choice.
-  //       Examples: "Draw cards" and "Remake Deck and fill Hand".
-  // TODO: Render cards as a stack of card-like shapes, not text.
-  // TODO: Make #world elements clickable to choose a move.
-  //       For example:
-  //       - Click a card in Hand to play the card.
-  //       - Click a card in Field to duplicate by playing Be Fruitful.
-  // TODO: Show a card text if the cursor is hovered on the card.
 
   function textizeCards(cs) {
     if (cs.length == 0)
