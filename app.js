@@ -847,11 +847,8 @@ var shephy = {};
   // AI  {{{1
 
   var aiTable = {
-    random: function (gt, v) {
-      setTimeout(
-        function () {processMove(gt.moves[random(gt.moves.length)]);},
-        AUTOMATED_MOVE_DELAY * 2
-      );
+    random: function (gt) {
+      return gt.moves[random(gt.moves.length)];
     }
   };
 
@@ -954,7 +951,10 @@ var shephy = {};
         if (playerType == 'human') {
           setUpUIToChooseMove(gt, v);
         } else {
-          aiTable[playerType](gt, v);
+          setTimeout(
+            function () {processMove(aiTable[playerType](gt));},
+            AUTOMATED_MOVE_DELAY * 2
+          );
         }
       }
     }
