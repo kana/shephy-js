@@ -1028,6 +1028,7 @@ var shephy = {};
   // Bootstrap  {{{1
 
   $(function () {
+    $('#playerTypeForm').toggle(location.hash === '#ai');
     $('#startButton').click(startNewGame);
     drawGameTree(S.makeGameTree(S.makeInitalWorld()));
   });
