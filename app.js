@@ -844,17 +844,16 @@ var shephy = {};
     }];
   };
 
+  // AI  {{{1
+
+  var aiTable = {
+    random: function (gt) {
+      return gt.moves[random(gt.moves.length)];
+    }
+  };
+
   // UI  {{{1
-  // TODO: Add UI to start a new game after finishing a game.
   // TODO: Add UI to quit the current game.
-  // TODO: Choose a move automatically if it doesn't express a user's choice.
-  //       Examples: "Draw cards" and "Remake Deck and fill Hand".
-  // TODO: Render cards as a stack of card-like shapes, not text.
-  // TODO: Make #world elements clickable to choose a move.
-  //       For example:
-  //       - Click a card in Hand to play the card.
-  //       - Click a card in Field to duplicate by playing Be Fruitful.
-  // TODO: Show a card text if the cursor is hovered on the card.
 
   function textizeCards(cs) {
     if (cs.length == 0)
@@ -934,6 +933,7 @@ var shephy = {};
   }
 
   var AUTOMATED_MOVE_DELAY = 500;
+  var playerType;
 
   function processMove(m) {
     var gt = S.force(m.gameTreePromise);
@@ -948,7 +948,14 @@ var shephy = {};
           AUTOMATED_MOVE_DELAY
         );
       } else {
-        setUpUIToChooseMove(gt, v);
+        if (playerType == 'human') {
+          setUpUIToChooseMove(gt, v);
+        } else {
+          setTimeout(
+            function () {processMove(aiTable[playerType](gt));},
+            AUTOMATED_MOVE_DELAY * 2
+          );
+        }
       }
     }
   }
@@ -1010,6 +1017,7 @@ var shephy = {};
   }
 
   function startNewGame() {
+    playerType = $('#playerType').val();
     processMove(S.makeGameTree(S.makeInitalWorld()).moves[0]);
     $('#preferencePane').hide();
   }
@@ -1020,6 +1028,7 @@ var shephy = {};
   // Bootstrap  {{{1
 
   $(function () {
+    $('#playerTypeForm').toggle(location.hash === '#ai');
     $('#startButton').click(startNewGame);
     drawGameTree(S.makeGameTree(S.makeInitalWorld()));
   });
