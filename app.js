@@ -849,8 +849,60 @@ var shephy = {};
   var aiTable = {
     random: function (gt) {
       return gt.moves[random(gt.moves.length)];
+    },
+    minimax: function (gt) {
+      var ratings = calculateRatings(limitGameTreeDepth(gt, 4));
+      var maxRating = Math.max.apply(null, ratings);
+      return gt.moves[ratings.indexOf(maxRating)];
     }
   };
+
+  function limitGameTreeDepth(gameTree, depth) {
+    var moves;
+    if (depth === 0) {
+      moves = [];
+    } else {
+      moves = gameTree.moves.map(function (m) {
+        return {
+          description: m.description,
+          cardRegion: m.cardRegion,
+          cardIndex: m.cardIndex,
+          gameTreePromise: S.delay(function () {
+            return limitGameTreeDepth(S.force(m.gameTreePromise), depth - 1);
+          })
+        };
+      });
+      moves.automated = gameTree.moves.automated;
+      moves.description = gameTree.moves.description;
+    }
+    return {
+      world: gameTree.world,
+      moves: moves
+    };
+  }
+
+  function calculateRatings(gameTree) {
+    return gameTree.moves.map(function (m) {
+      return ratePosition(S.force(m.gameTreePromise));
+    });
+  }
+
+  function ratePosition(gameTree) {
+    if (1 <= gameTree.moves.length) {
+      return Math.max.apply(null, calculateRatings(gameTree));
+    } else {
+      return scorePosition(gameTree);
+    }
+  }
+
+  function scorePosition(gameTree) {
+    // TODO: Improve scoring.  For example:
+    // * Exile bad cards as soon as possible.
+    // * Use bad cards as soon as possible if their effects are small enough.
+    // * Bias towarad sheep sheep ranks rather than number of sheep.
+    var ranks = gameTree.world.field.map(function (c) {return c.rank;});
+    return ranks.reduce(function (ra, r) {return ra + r;}, 0);
+  }
 
   // UI  {{{1
   // TODO: Add UI to quit the current game.
