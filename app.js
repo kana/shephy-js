@@ -899,8 +899,7 @@ var shephy = {};
     // TODO: Improve scoring.  For example:
     // * Exile bad cards as soon as possible.
     // * Use bad cards as soon as possible if their effects are small enough.
-    // * Bias towarad sheep sheep ranks rather than number of sheep.
-    var ranks = gameTree.world.field.map(function (c) {return c.rank;});
+    var ranks = gameTree.world.field.map(function (c) {return c.rank * c.rank;});
     return ranks.reduce(function (ra, r) {return ra + r;}, 0);
   }
 
