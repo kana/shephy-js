@@ -899,8 +899,10 @@ var shephy = {};
     // TODO: Improve scoring.  For example:
     // * Exile bad cards as soon as possible.
     // * Use bad cards as soon as possible if their effects are small enough.
-    var ranks = gameTree.world.field.map(function (c) {return c.rank * c.rank;});
-    return ranks.reduce(function (ra, r) {return ra + r;}, 0);
+    var sheepScore = gameTree.world.field.
+      map(function (c) {return c.rank * c.rank;}).
+      reduce(function (total, score) {return total + score;}, 0);
+    return sheepScore;
   }
 
   // UI  {{{1
