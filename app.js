@@ -913,8 +913,20 @@ var shephy = {};
   }
 
   function scoreExiledCard(c) {
-    return 0;  // TODO: Implement.
+    return exiledCardScore[c.name] || 0;
   }
+
+  var exiledCardScore = {
+    'Crowding': 10,
+    'Falling Rock': 10,
+    'Lightning': 30,
+    'Meteor': 50,
+    'Plague': 10,
+    'Shephion': 100,
+    'Slump': 10,
+    'Storm': 15,
+    'Wolves': 20
+  };
 
   // UI  {{{1
   // TODO: Add UI to quit the current game.
