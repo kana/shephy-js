@@ -904,8 +904,9 @@ var shephy = {};
     // * Exile bad cards as soon as possible.
     // * Use bad cards as soon as possible if their effects are small enough.
     var sheepScore = sum(gameTree.world.field.map(scoreSheep));
+    var extinctscore = gameTree.world.field.length == 0 ? -999 : 0;
     var exileScore = sum(gameTree.world.field.map(scoreExiledCard));
-    return sheepScore + exileScore;
+    return sheepScore + extinctscore + exileScore;
   }
 
   function scoreSheep(c) {
