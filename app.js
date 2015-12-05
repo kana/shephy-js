@@ -915,26 +915,14 @@ var shephy = {};
   }
 
   function scoreDiscardedCard(c) {
-    return discardedCardScore[c.name] || 0;
+    return (badCardScore[c.name] || 0) / 10;
   }
-
-  var discardedCardScore = {
-    'Crowding': 10,
-    'Falling Rock': 10,
-    'Lightning': 30,
-    'Meteor': 50,
-    'Plague': 10,
-    'Shephion': 100,
-    'Slump': 10,
-    'Storm': 15,
-    'Wolves': 20
-  };
 
   function scoreExiledCard(c) {
-    return exiledCardScore[c.name] || 0;
+    return badCardScore[c.name] || 0;
   }
 
-  var exiledCardScore = {
+  var badCardScore = {
     'Crowding': 10,
     'Falling Rock': 10,
     'Lightning': 30,
