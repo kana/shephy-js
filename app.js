@@ -907,6 +907,7 @@ var shephy = {};
     var extinctscore = gameTree.world.field.length == 0 ? -999 : 0;
     var discardPileScore = sum(gameTree.world.discardPile.map(scoreDiscardedCard));
     var exileScore = sum(gameTree.world.field.map(scoreExiledCard));
+    var futureScore = scoreFuture(gameTree.world.hand, gameTree.world.deck);
     return sheepScore + extinctscore + discardPileScore + exileScore;
   }
 
@@ -933,6 +934,25 @@ var shephy = {};
     'Storm': 15,
     'Wolves': 20
   };
+
+  function scoreFuture(hand, deck) {
+    var counterCount = hand.filter(isCounterCard).length +
+                       deck.filter(isCounterCard).length;
+    var fatalCount = hand.filter(isFatalCard).length +
+                     deck.filter(isFatalCard).length;
+    return counterCount >= fatalCount ? 100 : -100;
+  }
+
+  function isCounterCard(card) {
+    return card.name == 'Planning Sheep' ||
+           card.name == 'Sheep Dog';
+  }
+
+  function isFatalCard(card) {
+    return card.name == 'Lightning' ||
+           card.name == 'Shephion' ||
+           card.name == 'Wolves';
+  }
 
   // UI  {{{1
   // TODO: Add UI to quit the current game.
