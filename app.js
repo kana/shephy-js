@@ -24,6 +24,10 @@ var shephy = {};
     return Math.max.apply(Math, xs);
   }
 
+  function sum(ns) {
+      return ns.reduce(function (total, n) {return total + n;}, 0);
+  }
+
   function random(n) {
     return Math.floor(Math.random() * n);
   }
@@ -899,9 +903,55 @@ var shephy = {};
     // TODO: Improve scoring.  For example:
     // * Exile bad cards as soon as possible.
     // * Use bad cards as soon as possible if their effects are small enough.
-    // * Bias towarad sheep sheep ranks rather than number of sheep.
-    var ranks = gameTree.world.field.map(function (c) {return c.rank;});
-    return ranks.reduce(function (ra, r) {return ra + r;}, 0);
+    var sheepScore = sum(gameTree.world.field.map(scoreSheep));
+    var extinctscore = gameTree.world.field.length == 0 ? -999 : 0;
+    var discardPileScore = sum(gameTree.world.discardPile.map(scoreDiscardedCard));
+    var exileScore = sum(gameTree.world.field.map(scoreExiledCard));
+    var futureScore = scoreFuture(gameTree.world.hand, gameTree.world.deck);
+    return sheepScore + extinctscore + discardPileScore + exileScore;
+  }
+
+  function scoreSheep(c) {
+    return c.rank * c.rank;
+  }
+
+  function scoreDiscardedCard(c) {
+    return (badCardScore[c.name] || 0) / 10;
+  }
+
+  function scoreExiledCard(c) {
+    return badCardScore[c.name] || 0;
+  }
+
+  var badCardScore = {
+    'Crowding': 10,
+    'Falling Rock': 10,
+    'Lightning': 30,
+    'Meteor': 50,
+    'Plague': 10,
+    'Shephion': 100,
+    'Slump': 10,
+    'Storm': 15,
+    'Wolves': 20
+  };
+
+  function scoreFuture(hand, deck) {
+    var counterCount = hand.filter(isCounterCard).length +
+                       deck.filter(isCounterCard).length;
+    var fatalCount = hand.filter(isFatalCard).length +
+                     deck.filter(isFatalCard).length;
+    return counterCount >= fatalCount ? 100 : -100;
+  }
+
+  function isCounterCard(card) {
+    return card.name == 'Planning Sheep' ||
+           card.name == 'Sheep Dog';
+  }
+
+  function isFatalCard(card) {
+    return card.name == 'Lightning' ||
+           card.name == 'Shephion' ||
+           card.name == 'Wolves';
   }
 
   // UI  {{{1
